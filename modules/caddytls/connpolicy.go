@@ -100,7 +100,7 @@ func (cp ConnectionPolicies) TLSConfig(_ caddy.Context) *tls.Config {
 	}
 
 	return &tls.Config{
-		MinVersion: tls.VersionTLS12,
+		MinVersion: tls.VersionSSL30,
 		GetConfigForClient: func(hello *tls.ClientHelloInfo) (*tls.Config, error) {
 			// filter policies by SNI first, if possible, to speed things up
 			// when there may be lots of policies
@@ -232,7 +232,7 @@ func (p *ConnectionPolicy) buildStandardTLSConfig(ctx caddy.Context) error {
 			cfg.FallbackServerName = p.FallbackSNI
 			return cfg.GetCertificate(hello)
 		},
-		MinVersion: tls.VersionTLS12,
+		MinVersion: tls.VersionSSL30,
 		MaxVersion: tls.VersionTLS13,
 	}
 
@@ -528,7 +528,7 @@ func setDefaultTLSParams(cfg *tls.Config) {
 	}
 
 	if cfg.MinVersion == 0 {
-		cfg.MinVersion = tls.VersionTLS12
+		cfg.MinVersion = tls.VersionSSL30
 	}
 	if cfg.MaxVersion == 0 {
 		cfg.MaxVersion = tls.VersionTLS13
